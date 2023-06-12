@@ -18,7 +18,7 @@ $ cd ~/eic/
 $ dd_web_display --export $DETECTOR_PATH/$DETECTOR_CONFIG.xml
 ```
 
-> Note: You may need to be connected to the internet as your run this command, since a magnetic fieldmap will need to be downloaded. In a future release of the geometry, the cached fieldmap that is provided inside the container will be used. A workaround on systems not connected to the internet is to create a link with `ln -s $DETECTOR_PATH/fieldmaps .` before the `fieldmaps` directory is created.
+> Note: If you are not inside `eic-shell`, you may need to be connected to the internet as your run this command since a magnetic fieldmap will need to be downloaded.
 {: .callout}
 
 The `dd_web_display` utility will create a ROOT file in the current directory that can be opened with the geometry viewer at https://eic.phy.anl.gov/geoviewer/ (or a local ROOT installation).

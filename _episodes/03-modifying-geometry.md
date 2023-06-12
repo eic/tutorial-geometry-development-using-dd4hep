@@ -35,13 +35,12 @@ $ cmake --build build -- install
 > Note: To speed up compilation, you may add the options `-j4` to the last command, where `4` corresponds to the number of cores you can use.
 {: .callout}
 
-This will install the geometry into the directory `~/eic/epic/install/` (and subdirectories). You will notice that `~/eic/epic/install/share/epic` contains the same files that we explored earlier.
+This will install the geometry into the directory `~/eic/epic/install/` (and subdirectories). You will notice that `~/eic/epic/install/share/epic` contains the same files that we explored earlier inside the `/opt/detector` directory.
 
 As before, we now need to load the environment for this geometry. We can again use the `setup.sh` script for this, though now we must use the one installed in our local installation directory:
 ```console
 $ source install/setup.sh
 ```
-(Note: You will notice that this script warns about not loading the `ip6` geometry. If you are running this in the same `eic-shell` session as before, the `BEAMLINE_PATH` environment variable should still be set to point to the central `ip6` geometry repository, which is fine. If you are running this in a separate session, please source the central `setup.sh` file first, and then source the local `setup.sh` file.)
 
 When we run `dd_web_display --export $DETECTOR_PATH/$DETECTOR_CONFIG.xml` now, we will use the local geometry parametrization and the local geometry plugins. (Note: As before, downloads of fieldmaps and calibration files will be necessary.)
 

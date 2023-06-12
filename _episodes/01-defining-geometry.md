@@ -17,9 +17,17 @@ We start the discussion of the geometry definition with an overview of the locat
 Several standard geometry versions are included in `eic-shell` under the `/opt/detector/` location. This includes (currently) at least the following:
 ```console
 $ ls -1 /opt/detector/
-athena-nightly
 calibrations
-ecce-nightly
+epic-22.12.0
+epic-23.01.0
+epic-23.03.0
+epic-23.03.0-alt-img
+epic-23.05.0
+epic-23.05.1
+epic-23.05.2
+epic-23.06.0
+epic-alternative-geometries-img-ecal
+epic-main
 epic-nightly
 fieldmaps
 lib
@@ -30,7 +38,7 @@ share
 > Note: `ls -1` lists the files with 1 file per line, i.e. in 1 column.
 {: .callout}
 
-The `epic-nightly` directory contains the current 'nightly build' of the EPIC geometry.
+The `epic-nightly` directory contains the current 'nightly build' of the ePIC geometry.
 ```console
 $ ls -1 /opt/detector/epic-nightly/
 lib
@@ -55,13 +63,15 @@ You can verify the latter by investigating the values of several environment var
 - `DETECTOR_VERSION` is the version (i.e. GitHub branch or tag) that is loaded (`main`),
 - `DETECTOR_CONFIG` is the detector configuration to use (i.e. whether to include MRICH or PFRICH, SciGlass or imaging ECAL),
 - `DETECTOR_PATH` is the location that points to the geometry resources (`/opt/detector/epic-nightly/share/epic`).
-Similarly, this will have loaded several beamline environment variables, with similar names and meaning:
-- `BEAMLINE_CONFIG` (`ip6`),
-- `BEAMLINE_CONFIG_VERSION` (`master`),
-- `BEAMLINE_PATH` (`/opt/detector/epic-nightly/share/epic/`).
+
+> Note: For older geometries, this will have loaded several beamline environment variables, with similar names and meaning:
+> - `BEAMLINE_CONFIG` (`ip6`),
+> - `BEAMLINE_CONFIG_VERSION` (`master`),
+> - `BEAMLINE_PATH` (`/opt/detector/epic-nightly/share/epic/`).
+{: .callout}
 
 > Exercise:
-> - Load the standard EPIC geometry and verify (with e.g. `echo $DETECTOR`) that the environment variables are set.
+> - Load the standard ePIC geometry and verify (with e.g. `echo $DETECTOR`) that the environment variables are set.
 > - Load another geometry and verify that the environment variables are indeed different.
 {: .challenge}
 
@@ -70,19 +80,15 @@ Similarly, this will have loaded several beamline environment variables, with si
 We will now take a look in the directory pointed to with the environment variable `$DETECTOR_PATH`, the location of the geometry resources:
 ```console
 $ ls $DETECTOR_PATH
-calibrations           ecce_inner_detector.xml  epic_18x275.xml          epic_pfrich_only.xml
-compact                ecce_ip6.xml             epic_calorimeters.xml    epic_pid_only.xml
-ecce_18x275.xml        ecce_pfrich_only.xml     epic_central.xml         epic_sciglass.xml
-ecce_calorimeters.xml  ecce_pid_only.xml        epic_dirc_only.xml       epic_tof_only.xml
-ecce_central.xml       ecce_sciglass.xml        epic_drich_only.xml      epic_tracking_only.xml
-ecce_dirc_only.xml     ecce_tof_only.xml        epic_full.xml            epic_vertex_only.xml
-ecce_drich_only.xml    ecce_tracking_only.xml   epic_imaging.xml         epic.xml
-ecce_full.xml          ecce_vertex_only.xml     epic_inner_detector.xml  fieldmaps
-ecce_imaging.xml       ecce.xml                 epic_ip6.xml             ip6
+calibrations     epic_5x100.xml              epic_brycecanyon_no_pfrich.xml    epic_dirc_only.xml                       epic_hcal_gdml.xml        epic_ip6_extended.xml        epic_pfrich_gdml_only.xml  epic_tof_only.xml
+compact          epic_5x41.xml               epic_brycecanyon_pfrich_gdml.xml  epic_drich_only.xml                      epic_imaging.xml          epic_ip6.xml                 epic_pfrich_only.xml       epic_tracking_only.xml
+epic_10x100.xml  epic_arches_mrich_gdml.xml  epic_brycecanyon.xml              epic_forward_detectors_with_inserts.xml  epic_inner_detector.xml   epic_lfhcal_only.xml         epic_pid_only.xml          epic_vertex_only.xml
+epic_10x275.xml  epic_arches.xml             epic_calorimeters.xml             epic_forward_detectors.xml               epic_ip6_arches.xml       epic_lfhcal_with_insert.xml  epic_sciglass_only.xml     epic.xml
+epic_18x275.xml  epic_bhcal.xml              epic_central.xml                  epic_full.xml                            epic_ip6_brycecanyon.xml  epic_mrich_only.xml          epic_tof_endcap_only.xml   fieldmaps
 ```
-You will see many xml files, all of which are entry points to the geometry in certain configurations. For example, `epic_drich_only.xml` includes the geometry that has only the DRICH (and, possibly, the central beamline). The default configuration, `epic.xml`, is typically the configuration you will want to use. That is the value that `DETECTOR_CONFIG` will be set to by default.
+You will see many xml files, all of which are entry points to the geometry in certain configurations. For example, `epic_drich_only.xml` includes the geometry that has only the dual RICH or dRICH (and, possibly, the central beamline). The default configuration, `epic.xml`, is typically the configuration you will want to use. That is the value that `DETECTOR_CONFIG` will be set to by default.
 
-> Note: In the EPIC geometry you may also see some files that still refer to ECCE; these are kept for backward compatibility and will disappear in a future geometry release.
+> Note: In older ePIC geometries you may also see some files that still refer to ECCE; these are kept for backward compatibility and were removed in more recent geometry release.
 {: .callout}
 
 Let's take a look in *the default entry point file*, pointed at by the `DETECTOR_CONFIG` environment variable. This is the file `epic.xml`:
@@ -93,12 +99,12 @@ $ less $DETECTOR_PATH/$DETECTOR_CONFIG.xml
 
 The xml file includes several blocks, but look in particular for the following lines:
 - `<include ref="${DETECTOR_PATH}/compact/definitions.xml"/>`: This line includes the overall detector parametrization file (think of this as a detector parameter table similar to what the EIC Menagerie provides).
-- `<include ref="${DETECTOR_PATH}/compact/tracker.xml"/>`: This line includes the tracker subsystems; there are other include lines that load other subsystems.
-- `<include ref="${BEAMLINE_PATH}/ip6/far_forward.xml"/>`: This line includes the far forward subsystems; note the different path prefix and directory `ip6`.
+- `<include ref="${DETECTOR_PATH}/compact/tracking/vertex_barrel.xml"/>`: This line includes one of the tracker subsystems; there are other include lines that load other tracking subsystems, or even other types of subsystems.
+- `<include ref="${BEAMLINE_PATH}/compact/far_forward.xml"/>`: This line includes the far forward subsystems.
 
-Several of these included files (e.g. `tracker.xml`) include even more files (e.g. `tracker/vertex_barrel.xml`).
+Several of these included files (e.g. `far_forward.xml`) include even more files (e.g. `far_forward/ZDC.xml`).
 
-Let's now take a look at *a particular detector subsystem end point file* (which does not include any more files), namely `tracker/vertex_barrel.xml`.
+Let's now take a look at *a particular detector subsystem end point file* (which does not include any more files), namely `tracking/vertex_barrel.xml`.
 ```console
 $ less $DETECTOR_PATH/compact/tracker/vertex_barrel.xml
 ```
@@ -107,12 +113,13 @@ You will notice that the detector is described by parameters in a `define` block
   <define>
     <constant name="VertexBarrelMod_length"             value="VertexBarrel_length"/>
     <constant name="VertexBarrelMod_rmin"               value="VertexBarrel_rmin"/>
+
     <constant name="SiVertexSensor_thickness"           value="40*um"/>
   </define>
 ```
 which can either use another parameter defined previously in the included files, or which can be defined in this file itself. A best practices is to define detailed parameters of each subsystem in the end point file, but to defer to the central definitions in the `definitions.xml` for quantities such as the overal size and location of the subsystem, or interfaces with other subsystems.
 
-The parameters are then used in the `detector` block to define the detector itself (abridged):
+The parameters are then used in the `detector` block to define the detector itself (much abridged):
 ```xml
   <detectors>
     <detector
