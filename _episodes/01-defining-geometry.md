@@ -106,7 +106,7 @@ Several of these included files (e.g. `far_forward.xml`) include even more files
 
 Let's now take a look at *a particular detector subsystem end point file* (which does not include any more files), namely `tracking/vertex_barrel.xml`.
 ```console
-$ less $DETECTOR_PATH/compact/tracker/vertex_barrel.xml
+$ less $DETECTOR_PATH/compact/tracking/vertex_barrel.xml
 ```
 You will notice that the detector is described by parameters in a `define` block, such as (abridged):
 ```xml
