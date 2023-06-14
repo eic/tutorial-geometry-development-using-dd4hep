@@ -21,7 +21,7 @@ $ dd_web_display --export $DETECTOR_PATH/$DETECTOR_CONFIG.xml
 > Note: If you are not inside `eic-shell`, you may need to be connected to the internet as your run this command since a magnetic fieldmap will need to be downloaded.
 {: .callout}
 
-The `dd_web_display` utility will create a ROOT file in the current directory that can be opened with the geometry viewer at https://eic.phy.anl.gov/geoviewer/ (or a local ROOT installation).
+The `dd_web_display` utility will create a ROOT file in the current directory that can be opened with the geometry viewer online at [https://eic.phy.anl.gov/geoviewer/](https://eic.phy.anl.gov/geoviewer/) or [https://root.cern/js/latest](https://root.cern/js/latest), or a local ROOT installation.
 
 For local ROOT installations, the following commands may be helpful:
 ```
@@ -33,6 +33,5 @@ The geometry viewer has to make decisions on what to draw in order to keep the n
 
 > Exercise:
 > - Export a different detector configuration from the default `epic.xml`, and export this to ROOT TGeo format.
-> - Open the exported ROOT file in the geometry viewer at https://eic.phy.anl.gov/geoviewer.
+> - Open the exported ROOT file in the geometry viewer at [https://eic.phy.anl.gov/geoviewer/](https://eic.phy.anl.gov/geoviewer/) or [https://root.cern/js/latest](https://root.cern/js/latest).
 {: .challenge}
-
