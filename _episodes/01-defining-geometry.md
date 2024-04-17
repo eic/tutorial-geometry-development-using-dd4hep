@@ -1,13 +1,3 @@
-## Introduction
-
-The [ePIC geometry](https://github.com/eic/epic) is described using the [DD4hep toolkit](https://dd4hep.web.cern.ch/dd4hep/).
-
-DD4hep (Detector Description for High Energy Physics) is a toolkit which acts as a single, central source of detector information for simulation and reconstruction of simulated and experimental data. The core DD4hep geometry description is built around the [ROOT geometry package](https://root.cern/manual/geometry/) while providing automatic conversions to other geometrical representaions, such as exporting CAD models, surfaces for acts reconstruction, material maps but most importany, [Geant4](https://geant4.web.cern.ch/docs/) for carrying out simulations.
-
-DD4hep additionally provides a much simplified wrapper around running Geant4 simulations, providing standardized output from sensitive detectors. In the case of the ePIC simulation, simulated particles and tracker/calorimeter hits are saved as collections in [EDM4hep format](https://github.com/key4hep/EDM4hep) (Event Data Model for High Energy Physics) built on [podio](https://github.com/AIDASoft/podio/blob/master/doc/doc.md) (plain-old-data I/O).
-
-## Lesson
-
 ---
 title: "Geometry Definition"
 teaching: 20
@@ -21,6 +11,15 @@ keypoints:
 - "Compact XML files are used to store parameters which are used by compiled plugins."
 ---
 
+## Introduction
+
+The [ePIC geometry](https://github.com/eic/epic) is described using the [DD4hep toolkit](https://dd4hep.web.cern.ch/dd4hep/).
+
+DD4hep (Detector Description for High Energy Physics) is a toolkit which acts as a single, central source of detector information for simulation and reconstruction of simulated and experimental data. The core DD4hep geometry description is built around the [ROOT geometry package](https://root.cern/manual/geometry/) while providing automatic conversions to other geometrical representaions, such as exporting CAD models, surfaces for acts reconstruction, material maps but most importany, [Geant4](https://geant4.web.cern.ch/docs/) for carrying out simulations.
+
+DD4hep additionally provides a much simplified wrapper around running Geant4 simulations, providing standardized output from sensitive detectors. In the case of the ePIC simulation, simulated particles and tracker/calorimeter hits are saved as collections in [EDM4hep format](https://github.com/key4hep/EDM4hep) (Event Data Model for High Energy Physics) built on [podio](https://github.com/AIDASoft/podio/blob/master/doc/doc.md) (plain-old-data I/O).
+
+## Lesson
 
 We start the discussion of the geometry definition with an overview of the locations of geometry files, and what is included in these files.
 
