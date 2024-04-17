@@ -19,7 +19,7 @@ DD4hep (Detector Description for High Energy Physics) is a toolkit which acts as
 
 DD4hep additionally provides a much simplified wrapper around running Geant4 simulations, providing standardized output from sensitive detectors. In the case of the ePIC simulation, simulated particles and tracker/calorimeter hits are saved as collections in [EDM4hep format](https://github.com/key4hep/EDM4hep) (Event Data Model for High Energy Physics) built on [podio](https://github.com/AIDASoft/podio/blob/master/doc/doc.md) (plain-old-data I/O).
 
-## Lesson
+# Lesson
 
 We start the discussion of the geometry definition with an overview of the locations of geometry files, and what is included in these files.
 
@@ -29,18 +29,19 @@ Several standard geometry versions are included in `eic-shell` under the `/opt/d
 ```console
 $ ls -1 /opt/detector/
 calibrations
-epic-22.12.0
-epic-23.01.0
-epic-23.03.0
-epic-23.03.0-alt-img
-epic-23.05.0
-epic-23.05.1
-epic-23.05.2
-epic-23.06.0
-epic-alternative-geometries-img-ecal
+dummyOutput.root
+epic-23.10.0
+epic-23.11.0
+epic-23.12.0
+epic-24.02.0
+epic-24.02.1
+epic-24.03.0
+epic-24.03.1
+epic-24.04.0
 epic-main
 epic-nightly
 fieldmaps
+gdml
 lib
 setup.sh
 share
@@ -49,9 +50,12 @@ share
 > Note: `ls -1` lists the files with 1 file per line, i.e. in 1 column.
 {: .callout}
 
-The `epic-nightly` directory contains the current 'nightly build' of the ePIC geometry.
+The versions avaliable in eic-shell are updated when tagged releases for the geometry are made each month or an update to dependancies installed in eic-shell removes back compatibility with older versions.
+
+The `epic-nightly` directory contains the current 'nightly build' of the ePIC geometry, built from the [epic repositories main branch](https://github.com/eic/epic/) every day.
 ```console
 $ ls -1 /opt/detector/epic-nightly/
+bin
 lib
 setup.sh
 share
@@ -75,10 +79,7 @@ You can verify the latter by investigating the values of several environment var
 - `DETECTOR_CONFIG` is the detector configuration to use (i.e. whether to include MRICH or PFRICH, SciGlass or imaging ECAL),
 - `DETECTOR_PATH` is the location that points to the geometry resources (`/opt/detector/epic-nightly/share/epic`).
 
-> Note: For older geometries, this will have loaded several beamline environment variables, with similar names and meaning:
-> - `BEAMLINE_CONFIG` (`ip6`),
-> - `BEAMLINE_CONFIG_VERSION` (`master`),
-> - `BEAMLINE_PATH` (`/opt/detector/epic-nightly/share/epic/`).
+> Note: When working on the geometry in your own git branch you will need to source the setup.sh present in the local install directory.
 {: .callout}
 
 > Exercise:
@@ -91,15 +92,22 @@ You can verify the latter by investigating the values of several environment var
 We will now take a look in the directory pointed to with the environment variable `$DETECTOR_PATH`, the location of the geometry resources:
 ```console
 $ ls $DETECTOR_PATH
-calibrations     epic_5x100.xml              epic_brycecanyon_no_pfrich.xml    epic_dirc_only.xml                       epic_hcal_gdml.xml        epic_ip6_extended.xml        epic_pfrich_gdml_only.xml  epic_tof_only.xml
-compact          epic_5x41.xml               epic_brycecanyon_pfrich_gdml.xml  epic_drich_only.xml                      epic_imaging.xml          epic_ip6.xml                 epic_pfrich_only.xml       epic_tracking_only.xml
-epic_10x100.xml  epic_arches_mrich_gdml.xml  epic_brycecanyon.xml              epic_forward_detectors_with_inserts.xml  epic_inner_detector.xml   epic_lfhcal_only.xml         epic_pid_only.xml          epic_vertex_only.xml
-epic_10x275.xml  epic_arches.xml             epic_calorimeters.xml             epic_forward_detectors.xml               epic_ip6_arches.xml       epic_lfhcal_with_insert.xml  epic_sciglass_only.xml     epic.xml
-epic_18x275.xml  epic_bhcal.xml              epic_central.xml                  epic_full.xml                            epic_ip6_brycecanyon.xml  epic_mrich_only.xml          epic_tof_endcap_only.xml   fieldmaps
+calibrations                      epic_craterlake_tracking_only.xml        epic_lfhcal_with_insert.xml
+compact                           epic_craterlake.xml                      epic_mrich_only.xml
+dummyOutput.root                  epic_dirc_only.xml                       epic_pfrich_only.xml
+epic_bhcal.xml                    epic_drich_only.xml                      epic_pid_only.xml
+epic_calorimeters.xml             epic_forward_detectors_with_inserts.xml  epic_tof_endcap_only.xml
+epic_craterlake_10x100.xml        epic_forward_detectors.xml               epic_tof_only.xml
+epic_craterlake_10x275.xml        epic_full.xml                            epic_vertex_only.xml
+epic_craterlake_18x110_Au.xml     epic_imaging_only.xml                    epic.xml
+epic_craterlake_18x275.xml        epic_inner_detector.xml                  epic_zdc_lyso_sipm.xml
+epic_craterlake_5x41.xml          epic_ip6_extended.xml                    epic_zdc_sipm_on_tile_only.xml
+epic_craterlake_material_map.xml  epic_ip6.xml                             fieldmaps
+epic_craterlake_no_bhcal.xml      epic_lfhcal_only.xml                     gdml
 ```
-You will see many xml files, all of which are entry points to the geometry in certain configurations. For example, `epic_drich_only.xml` includes the geometry that has only the dual RICH or dRICH (and, possibly, the central beamline). The default configuration, `epic.xml`, is typically the configuration you will want to use. That is the value that `DETECTOR_CONFIG` will be set to by default.
+You will see many xml files, all of which are entry points to the geometry in certain configurations. For example, `epic_drich_only.xml` includes the geometry that has only the dual RICH or dRICH. 'epic_ip6.xml' includes the beampipe geometry and the auxillary far-forward and backward detectors but no components of the central detector. The default configuration, `epic.xml`, is typically the configuration you will want to use, this is the value that `DETECTOR_CONFIG` will be set to by default.
 
-> Note: In older ePIC geometries you may also see some files that still refer to ECCE; these are kept for backward compatibility and were removed in more recent geometry release.
+> Note: The current nightly eic-shell build contains only configurations for the craterlake detector setup.
 {: .callout}
 
 Let's take a look in *the default entry point file*, pointed at by the `DETECTOR_CONFIG` environment variable. This is the file `epic.xml`:
@@ -111,9 +119,12 @@ $ less $DETECTOR_PATH/$DETECTOR_CONFIG.xml
 The xml file includes several blocks, but look in particular for the following lines:
 - `<include ref="${DETECTOR_PATH}/compact/definitions.xml"/>`: This line includes the overall detector parametrization file (think of this as a detector parameter table similar to what the EIC Menagerie provides).
 - `<include ref="${DETECTOR_PATH}/compact/tracking/vertex_barrel.xml"/>`: This line includes one of the tracker subsystems; there are other include lines that load other tracking subsystems, or even other types of subsystems.
-- `<include ref="${BEAMLINE_PATH}/compact/far_forward.xml"/>`: This line includes the far forward subsystems.
+- `<include ref="${BEAMLINE_PATH}/compact/far_forward/default.xml"/>`: This line includes the far forward subsystems.
 
-Several of these included files (e.g. `far_forward.xml`) include even more files (e.g. `far_forward/ZDC.xml`).
+These included files (e.g. `far_forward/default.xml`) can include further nested inclusion of even more files (e.g. `far_forward/ZDC.xml`).
+
+> Note: The xml files are parsed in order, so the 'definitions.xml' file needs to be included before any file which needs to access the defined parameters.
+{: .callout}
 
 Let's now take a look at *a particular detector subsystem end point file* (which does not include any more files), namely `tracking/vertex_barrel.xml`.
 ```console
