@@ -105,7 +105,7 @@ epic_craterlake_5x41.xml          epic_ip6_extended.xml                    epic_
 epic_craterlake_material_map.xml  epic_ip6.xml                             fieldmaps
 epic_craterlake_no_bhcal.xml      epic_lfhcal_only.xml                     gdml
 ```
-You will see many xml files, all of which are entry points to the geometry in certain configurations. For example, `epic_drich_only.xml` includes the geometry that has only the dual RICH or dRICH. 'epic_ip6.xml' includes the beampipe geometry and the auxillary far-forward and backward detectors but no components of the central detector. The default configuration, `epic.xml`, is typically the configuration you will want to use, this is the value that `DETECTOR_CONFIG` will be set to by default.
+You will see many xml files, all of which are entry points to the geometry in certain configurations. For example, `epic_drich_only.xml` includes the geometry that has only the dual RICH or dRICH. `epic_ip6.xml` includes the beampipe geometry and the auxillary far-forward and backward detectors but no components of the central detector. The default configuration, `epic.xml`, is typically the configuration you will want to use, this is the value that `DETECTOR_CONFIG` will be set to by default.
 
 > Note: The current nightly eic-shell build contains only configurations for the craterlake detector setup.
 {: .callout}
@@ -123,7 +123,7 @@ The xml file includes several blocks, but look in particular for the following l
 
 These included files (e.g. `far_forward/default.xml`) can include further nested inclusion of even more files (e.g. `far_forward/ZDC.xml`).
 
-> Note: The xml files are parsed in order, so the 'definitions.xml' file needs to be included before any file which needs to access the defined parameters.
+> Note: The xml files are parsed in order, so the `definitions.xml` file needs to be included before any file which needs to access the defined parameters.
 {: .callout}
 
 Let's now take a look at *a particular detector subsystem end point file* (which does not include any more files), namely `tracking/vertex_barrel.xml`.
