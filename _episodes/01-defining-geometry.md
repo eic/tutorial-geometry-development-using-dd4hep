@@ -119,7 +119,7 @@ $ less $DETECTOR_PATH/$DETECTOR_CONFIG.xml
 The xml file includes several blocks, but look in particular for the following lines:
 - `<include ref="${DETECTOR_PATH}/compact/definitions.xml"/>`: This line includes the overall detector parametrization file (think of this as a detector parameter table similar to what the EIC Menagerie provides).
 - `<include ref="${DETECTOR_PATH}/compact/tracking/vertex_barrel.xml"/>`: This line includes one of the tracker subsystems; there are other include lines that load other tracking subsystems, or even other types of subsystems.
-- `<include ref="${BEAMLINE_PATH}/compact/far_forward/default.xml"/>`: This line includes the far forward subsystems.
+- `<include ref="${DETECTOR_PATH}/compact/far_forward/default.xml"/>`: This line includes the far forward subsystems.
 
 These included files (e.g. `far_forward/default.xml`) can include further nested inclusion of even more files (e.g. `far_forward/ZDC.xml`).
 

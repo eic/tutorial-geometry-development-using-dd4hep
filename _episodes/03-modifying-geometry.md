@@ -44,7 +44,7 @@ $ source install/setup.sh
 
 When we run `dd_web_display --export $DETECTOR_PATH/$DETECTOR_CONFIG.xml` now, we will use the local geometry parametrization and the local geometry plugins. (Note: As before, downloads of fieldmaps and calibration files will be necessary.)
 
-> Exercise:
+> Quick Exercise:
 > - Ensure that you have a local copy of the geometry repository which you can compile and install in a local directory.
 > - Verify that, after sourcing the `setup.sh` script, the `DETECTOR_PATH` points to the correct local install directory.
 > - Verify that `dd_web_display` can indeed export the geometry for the detector subsystem configuration you used before.
@@ -54,9 +54,38 @@ When we run `dd_web_display --export $DETECTOR_PATH/$DETECTOR_CONFIG.xml` now, w
 
 It may be clear at this point how to make modifications to the parametrization, commit them to a branch in the local repository, and submit a pull request on GitHub to include them in the main branch.
 
+For the remainder of this lesson we will focus on the vertex barrel detector using the much reduced geometry configuration `epic_vertex_only.xml` so that any change made are more evident.
+
 What we have not covered yet is the discussion of what goes into a detector plugin. Let's look at the `epic_VertexBarrel` plugin we encountered earlier. The names of the plugins may not agree with the source files in the `src/` directory. This allows us to support multiple detector types with the same source files. In this case, `epic_VertexBarrel` is defined in the file `src/BarrelTrackerWithFrame_geo.cpp`.
 
-> Exercise:
+If you are not sure what fine in the `src` directory builds the plugin you are looking for, find the `type` in the xml detector definition and use the `grep` shell command.
+
+```console
+$ grep -r epic_VertexBarrel src/
+src/BarrelTrackerWithFrame_geo.cpp:DECLARE_DETELEMENT(epic_VertexBarrel,    create_BarrelTrackerWithFrame)
+```
+
+The DECLARE_DETELEMENT line, at the bottom of the `src/BarrelTrackerWithFrame_geo.cpp` file provides dd4hep with the link which tells it to call the `create_BarrelTrackerWithFrame` function when an xml detector definition is given the `epic_VertexBarrel` type.
+
+We now know that changing the content of the `create_BarrelTrackerWithFrame` function should be called when the `epic_vertex_only.xml` is used when dd4hep loads a geometry.
+
+> Quick Exercise:
+> - Create and chackout a new branch forked from the main branch.
 > - Add a printout to the detector geometry plugin that corresponds to the type you picked earlier.
 > - Recompile and rerun the `dd_web_display` step to verify that the printout statement has been added.
 {: .challenge}
+
+Next we will take a deeper dive into the `create_BarrelTrackerWithFrame` function and how it is configured by the xml file `compact/tracking/vertex_barrel.xml`
+
+
+
+
+
+
+
+
+
+
+
+> Note: Changes to the xml files in `install/share/epic/`... can made and picked up without recompiling the code, however they will be overwritten when the code is recompiled. In order to test temporary changes a top level configuration file can be copied to a path outside of `install`. This then needs to be edited to internally point to the compact file you are editing rather than the path given by the install, `${DETECTOR_PATH}`.
+{: .callout}
