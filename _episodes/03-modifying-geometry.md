@@ -1,7 +1,7 @@
 ---
 title: "Modifying geometry"
-teaching: 20
-exercises: 20
+teaching: 30
+exercises: 30
 questions:
 - "How do we modify or add geometry defined in DD4hep?"
 objectives:
@@ -123,5 +123,55 @@ A fuller description of how to access and use the xml parameters is given in sec
 > - Change the values in the xml and rerun to verify the value is being read properly.
 {: .challenge}
 
-> Note: Changes to the xml files in `install/share/epic/`... can made and picked up without recompiling the code, however they will be overwritten when the code is recompiled. In order to test temporary changes a top level configuration file can be copied to a path outside of `install`. This then needs to be edited to internally point to the compact file you are editing rather than the path given by the install, `${DETECTOR_PATH}`.
+> Note: Changes to the xml files in `install/share/epic/`... can made without recompiling the code, however they will be overwritten when the code is recompiled. In order to test temporary changes a top level configuration file can be copied to a path outside of `install`. This then needs to be edited to internally point to the compact file you are editing rather than the path given by the install, `${DETECTOR_PATH}`.
 {: .callout}
+
+# Building new components
+
+DD4hep geometries are built in a similar hierarchical way to Geant4 geometries.
+
+> - Shape - 3D shape of the component. Can be a simple shape, made from boolean combinations of simple shapes or imported from CAD.
+> - Volume - Adds physical properties to the shape such as its material and if its sensitive.
+> - Placement - Position(s) that the volume is located within your detector geometry, this can be a position nested within another volume, containing unique identifier.
+
+We will start by looking at the shapes anv volumes. The most common shapes you are likely to find yourself using are `Box` and `Tube`. In `src/BarrelTrackerWithFrame_geo.cpp` both are used, `module_component` is defined as `Box`, the volume of which takes its material from the xml description:
+
+```code
+172      Box          c_box(x_comp.width() / 2, x_comp.length() / 2, x_comp.thickness() / 2);
+173      Volume       c_vol(c_nam, c_box, description.material(x_comp.materialStr()));
+```
+
+`layer` volumes into which `module_component`s are later placed are described as a `Tube` but this time the volume is directly given the air material:
+
+```
+239    Tube       lay_tub(x_barrel.inner_r(), x_barrel.outer_r(), x_barrel.z_length() / 2.0);
+240    Volume     lay_vol(lay_nam, lay_tub, air); // Create the layer envelope volume.
+```
+
+
+In DD4hep there is a type of volume called an Assembly which contains volumes placed within itself but doesn't have a shape of its own. This is very useful for arranging volumes without needing a container volume defined with might have overlaps of their own where none are really present.
+
+> Notes: 
+> - The [DD4hep shapes](https://dd4hep.web.cern.ch/dd4hep/usermanuals/DD4hepManual/DD4hepManualch2.html#x3-290002.9) are based directly off the [ROOT geometry shapes](https://root.cern.ch/root/htmldoc/guides/users-guide/Geometry.html#shapes). An useful, probably out of date table comparing the ROOT, DD4hep and Geant4 shape names can be found here:  [https://github.com/AIDASoft/DD4hep/issues/588](https://github.com/AIDASoft/DD4hep/issues/588)
+> - DD4hep provides some shape plugins directly, so very basic geometries can be described directly in the xml with no additional code.
+{: .callout}
+
+> Exercise:
+> - Create a new volume within the hierachy in `src/BarrelTrackerWithFrame_geo.cpp`.
+> - Recompile and rerun the `dd_web_display` step using `epic_vertex_only.xml` locating the new shape(s) you have added in the ROOTJS viewer.
+{: .challenge}
+
+# Testing overlaps
+
+It is important for running the Geant4 simulation that geometries do not overlap. When stepping through the geometry a particle cannot know which volume it is in. An overlap check is run by GitHub when you request that your changes are merged into the main branch of the epic code.
+
+> Exercise:
+> - Run the overlap check on your geometry with the added component.
+> - Change some 
+> - Recompile and rerun the `dd_web_display` step using `epic_vertex_only.xml` to verify that the printout statement has been added.
+> - Change the values in the xml and rerun to verify the value is being read properly.
+{: .challenge}
+
+# Readout 
+
+Placed volumes can be made sensitive
