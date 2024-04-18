@@ -52,6 +52,8 @@ When we run `dd_web_display --export $DETECTOR_PATH/$DETECTOR_CONFIG.xml` now, w
 
 ## Anatomy of a detector plugin
 
+# Introduction
+
 It may be clear at this point how to make modifications to the parametrization, commit them to a branch in the local repository, and submit a pull request on GitHub to include them in the main branch.
 
 For the remainder of this lesson we will focus on the vertex barrel detector using the much reduced geometry configuration `epic_vertex_only.xml` so that any change made are more evident.
@@ -69,23 +71,57 @@ The DECLARE_DETELEMENT line, at the bottom of the `src/BarrelTrackerWithFrame_ge
 
 We now know that changing the content of the `create_BarrelTrackerWithFrame` function should be called when the `epic_vertex_only.xml` is used when dd4hep loads a geometry.
 
-> Quick Exercise:
+# Passing parameters from xml
+
+Next we will take a deeper dive into the `create_BarrelTrackerWithFrame` function to pick out the key components and how it is configured by the xml file `compact/tracking/vertex_barrel.xml`
+
+```code
+static Ref_t create_BarrelTrackerWithFrame(Detector& description, xml_h e, SensitiveDetector sens)
+```
+
+here `description` contains access to the full tree defined from the main detector xml file. `e` contains the specific information contained within the xml tree within the `<detector>` blocks.
+
+There are a few ways to access these xml configuration parameters. Some xml elements have methods provided by dd4hep which allow direct access to the values, such as:
+
+```code
+51  Material                     air      = description.air();
+52  int                          det_id   = x_det.id();
+53  string                       det_name = x_det.nameStr();
+```
+
+A list of tags dd4hep provides a conventient conversion method for can be found [here](https://dd4hep.web.cern.ch/dd4hep/reference/UnicodeValues_8h_source.html), (**There is almost certainly a better link**).
+
+More often you may be wanting to define a parameter by a tag of your choice or if you're wanting to be certain how it's being handled. The following (abridged) code is an example of how to access parameters of any name.
+
+```
+  for (xml_coll_t su(x_det, _U(support)); su; ++su) {
+    xml_comp_t  x_support         = su;
+    double      support_thickness = getAttrOrDefault(x_support, _U(thickness), 2.0 * mm);
+    double      support_length    = getAttrOrDefault(x_support, _U(length), 2.0 * mm);
+    double      support_rmin      = getAttrOrDefault(x_support, _U(rmin), 2.0 * mm);
+    double      support_zstart    = getAttrOrDefault(x_support, _U(zstart), 2.0 * mm);
+    std::string support_name      = getAttrOrDefault<std::string>(x_support, _Unicode(name), "support_tube");
+    std::string support_vis       = getAttrOrDefault<std::string>(x_support, _Unicode(vis), "AnlRed");
+  }
+```
+
+The code loops over all `<support>` elements inside the `<detector>` block, located using `_U(support)` which interprets content as unicode. Inside each support node the `getAttrOrDefault` method sets the variables to the values given by the unicode `thickness` etc, or if they are not present in the support node sets a default value. If you want to require the parameter be defined in the xml file you could simply use `x_support.child(thickness)`.
+
+> Note:
+> - No support blocks actually currently appear in the `compact/tracking/vertex_barrel.xml` file so this block of code won't be run.
+> - In the xml file, there must be no white space between the parameter, = sign and the value.
+{: .callout}
+
+A fuller description of how to access and use the xml parameters is given in section [2.4 of the dd4hep manual](https://dd4hep.web.cern.ch/dd4hep/usermanuals/DD4hepManual/DD4hepManualch2.html#x3-210002.4)
+
+
+> Exercise:
 > - Create and chackout a new branch forked from the main branch.
-> - Add a printout to the detector geometry plugin that corresponds to the type you picked earlier.
-> - Recompile and rerun the `dd_web_display` step to verify that the printout statement has been added.
+> - Add a new configuration parameter into `compact/tracking/vertex_barrel.xml` 
+> - Add code to `src/BarrelTrackerWithFrame_geo.cpp` which will read the new parameter and a print statement to display its value to the terminal.
+> - Recompile and rerun the `dd_web_display` step using `epic_vertex_only.xml` to verify that the printout statement has been added.
+> - Change the values in the xml and rerun to verify the value is being read properly.
 {: .challenge}
-
-Next we will take a deeper dive into the `create_BarrelTrackerWithFrame` function and how it is configured by the xml file `compact/tracking/vertex_barrel.xml`
-
-
-
-
-
-
-
-
-
-
 
 > Note: Changes to the xml files in `install/share/epic/`... can made and picked up without recompiling the code, however they will be overwritten when the code is recompiled. In order to test temporary changes a top level configuration file can be copied to a path outside of `install`. This then needs to be edited to internally point to the compact file you are editing rather than the path given by the install, `${DETECTOR_PATH}`.
 {: .callout}
