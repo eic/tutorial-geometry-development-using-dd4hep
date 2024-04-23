@@ -143,11 +143,10 @@ We will start by looking at the shapes anv volumes. The most common shapes you a
 
 `layer` volumes into which `module_component`s are later placed are described as a `Tube` but this time the volume is directly given the air material:
 
-```
+```code
 239    Tube       lay_tub(x_barrel.inner_r(), x_barrel.outer_r(), x_barrel.z_length() / 2.0);
 240    Volume     lay_vol(lay_nam, lay_tub, air); // Create the layer envelope volume.
 ```
-
 
 In DD4hep there is a type of volume called an Assembly which contains volumes placed within itself but doesn't have a shape of its own. This is very useful for arranging volumes without needing a container volume defined with might have overlaps of their own where none are really present.
 
@@ -157,21 +156,77 @@ In DD4hep there is a type of volume called an Assembly which contains volumes pl
 {: .callout}
 
 > Exercise:
-> - Create a new volume within the hierachy in `src/BarrelTrackerWithFrame_geo.cpp`.
+> - Create a new simple volume within the hierachy in `src/BarrelTrackerWithFrame_geo.cpp`.
 > - Recompile and rerun the `dd_web_display` step using `epic_vertex_only.xml` locating the new shape(s) you have added in the ROOTJS viewer.
+> - Build a new tube volume which contains tracking layers.
 {: .challenge}
 
 # Testing overlaps
 
 It is important for running the Geant4 simulation that geometries do not overlap. When stepping through the geometry a particle cannot know which volume it is in. An overlap check is run by GitHub when you request that your changes are merged into the main branch of the epic code.
 
+```
+python scripts/checkOverlaps.py -c ${DETECTOR_PATH}/epic_vertex_only.xml
+```
+
 > Exercise:
 > - Run the overlap check on your geometry with the added component.
-> - Change some 
-> - Recompile and rerun the `dd_web_display` step using `epic_vertex_only.xml` to verify that the printout statement has been added.
-> - Change the values in the xml and rerun to verify the value is being read properly.
+> - Change some parameters to add/remove the overlap and compare the output.
 {: .challenge}
 
 # Readout 
 
-Placed volumes can be made sensitive
+Placed volumes can be made sensitive by setting e.g.
+
+```code
+194  c_vol.setSensitiveDetector(sens);
+```
+
+The type of information that will be saved to the output is defined usually as either:
+
+```code
+  sens.setType("tracker");
+  sens.setType("calorimeter");
+```
+
+In the xml file the readout for the detector is passed in the `readout` field of the `detector` definition
+
+```code
+    <detector
+      id="VertexBarrel_0_ID"
+      name="VertexBarrel"
+      type="epic_VertexBarrel"
+      readout="VertexBarrelHits"
+      insideTrackingVolume="true">
+```
+
+Where readout references a `readout` also defined in the xml description
+
+```code
+  <readouts>
+    <readout name="VertexBarrelHits">
+      <segmentation type="CartesianGridXY" grid_size_x="0.020*mm" grid_size_y="0.020*mm" />
+      <id>system:8,layer:4,module:12,sensor:2,x:32:-16,y:-16</id>
+    </readout>
+  </readouts>
+```
+
+Here the name given will appear as the name of the branch containing the hits in the output edm4hep file. dd4hep provides very convenient segmentation to the readout which allows hits in a readout volume to be divided up to locations beyond its natural boundaries, this is configures by the `x` and `y` parameters as well as the `grid_size`.
+
+The readout branch contains the information on the hit energy deposited, time of arival etc. which is usually found in a simulation output but in addition it contains `CellID` which is a 64 bit field which uniquely identifies the detector segmentation. 
+
+In the case of `VertexBarrelHits`, 8 bits always required by the system, 4 bits locate a specific layer, 12 a module, 2 a sensor and 32 the remaining x-y segmentation. In the code, dd4hep requires a separate hierachy of the geometry detector elements which are given tags and numbers so they can be uniquely identified. This hieracy doesn't have to strictly follow the way the volumes are themselves constructed.
+
+```
+  DetElement mod_elt(lay_elt, module_name, module);
+  pv = lay_vol.placeVolume(module_env, tr);
+  pv.addPhysVolID("module", module);
+  mod_elt.setPlacement(pv);
+```
+
+Here `mod_elt` is give the parent element `layer_elt`, the name and module number. Then the element is attached to a placed volume which has been given the physical volume id `module`.
+
+> Exercise:
+> - Run the simulation...
+> - Change the sensitive type of the `BarrelTrackerWithFrame_geo.cpp` and compare the output to what you first saw.
+> - Try to make your new tube volume sensitive by setting as sensitive and adding a `DetElement` and giving it the necessary `addPhysVolID`.
