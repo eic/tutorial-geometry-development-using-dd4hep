@@ -52,7 +52,7 @@ When we run `dd_web_display --export $DETECTOR_PATH/$DETECTOR_CONFIG.xml` now, w
 
 ## Anatomy of a detector plugin
 
-# Introduction
+### Introduction
 
 It may be clear at this point how to make modifications to the parametrization, commit them to a branch in the local repository, and submit a pull request on GitHub to include them in the main branch.
 
@@ -71,7 +71,7 @@ The DECLARE_DETELEMENT line, at the bottom of the `src/BarrelTrackerWithFrame_ge
 
 We now know that changing the content of the `create_BarrelTrackerWithFrame` function should be called when the `epic_vertex_only.xml` is used when dd4hep loads a geometry.
 
-# Passing parameters from xml
+### Passing parameters from xml
 
 Next we will take a deeper dive into the `create_BarrelTrackerWithFrame` function to pick out the key components and how it is configured by the xml file `compact/tracking/vertex_barrel.xml`
 
@@ -126,7 +126,7 @@ A fuller description of how to access and use the xml parameters is given in sec
 > Note: Changes to the xml files in `install/share/epic/`... can made without recompiling the code, however they will be overwritten when the code is recompiled. In order to test temporary changes a top level configuration file can be copied to a path outside of `install`. This then needs to be edited to internally point to the compact file you are editing rather than the path given by the install, `${DETECTOR_PATH}`.
 {: .callout}
 
-# Building new components
+### Building new components
 
 DD4hep geometries are built in a similar hierarchical way to Geant4 geometries.
 
@@ -161,7 +161,7 @@ In DD4hep there is a type of volume called an Assembly which contains volumes pl
 > - Build a new tube volume which contains tracking layers.
 {: .challenge}
 
-# Testing overlaps
+### Testing overlaps
 
 It is important for running the Geant4 simulation that geometries do not overlap. When stepping through the geometry a particle cannot know which volume it is in. An overlap check is run by GitHub when you request that your changes are merged into the main branch of the epic code.
 
@@ -174,7 +174,7 @@ python scripts/checkOverlaps.py -c ${DETECTOR_PATH}/epic_vertex_only.xml
 > - Change some parameters to add/remove the overlap and compare the output.
 {: .challenge}
 
-# Readout 
+### Readout 
 
 Placed volumes can be made sensitive by setting e.g.
 
@@ -259,6 +259,6 @@ _VertexBarrelHits_MCParticle
 > - Try to make your new tube volume sensitive by setting as sensitive and adding a `DetElement` and giving it the necessary `addPhysVolID` values not currently used by the tracker.
 > - Open ended - Move your new Tube detector into a separate src file (Or create a new simple detector) and include it separately in the xml definition and readout. 
 
-# ACTS?
+### ACTS?
 
 ToDo
