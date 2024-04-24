@@ -1,7 +1,7 @@
 ---
 title: "Geometry Definition"
-teaching: 20
-exercises: 20
+teaching: 15
+exercises: 10
 questions:
 - "How do we define geometry using DD4hep?"
 objectives:
