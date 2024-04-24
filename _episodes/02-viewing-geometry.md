@@ -54,10 +54,10 @@ Parameters describing how each component of the geometry should be vizualised ar
 {: .challenge}
 
 ## Geant4 visualization
-If you are used to the Geant4 geometry visualisation or want to visually inspect where a subset of your event sample this is still possible using npsim.
+**Warning might not work for various reasons** If you are used to the Geant4 geometry visualisation or want to visually inspect where a subset of your event sample this is still possible using npsim.
 
 ```console
-$ npsim --runType qt --compactFile $DETECTOR_PATH/epic_ip6.xml --inputFiles root://dtn-eic.jlab.org//work/eic2/EPIC/EVGEN/SIDIS/pythia6-eic/1.0.0/18x275/q2_0to1/pythia_ep_noradcor_18x275_q2_0.000000001_1.0_run9.ab.hepmc3.tree.root --macro macro/b0_vis.mac
+  npsim --runType qt --compactFile $DETECTOR_PATH/epic_ip6.xml --inputFiles root://dtn-eic.jlab.org//work/eic2/EPIC/EVGEN/SIDIS/pythia6-eic/1.0.0/18x275/q2_0to1/pythia_ep_noradcor_18x275_q2_0.000000001_1.0_run9.ab.hepmc3.tree.root --macro macro/b0_vis.mac
 ```
 
 This particular example uses pythia6 min-bias events stored on the xrootd server at jlab. The visualization of particle tracks and the detector is controlled by the `macro/b0_vis.mac` file
