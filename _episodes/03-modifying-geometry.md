@@ -165,7 +165,7 @@ In DD4hep there is a type of volume called an Assembly which contains volumes pl
 
 It is important for running the Geant4 simulation that geometries do not overlap. When stepping through the geometry a particle cannot know which volume it is in. An overlap check is run by GitHub when you request that your changes are merged into the main branch of the epic code.
 
-```
+```shell
 python scripts/checkOverlaps.py -c ${DETECTOR_PATH}/epic_vertex_only.xml
 ```
 
@@ -217,7 +217,7 @@ The readout branch contains the information on the hit energy deposited, time of
 
 In the case of `VertexBarrelHits`, 8 bits always required by the system, 4 bits locate a specific layer, 12 a module, 2 a sensor and 32 the remaining x-y segmentation. In the code, dd4hep requires a separate hierachy of the geometry detector elements which are given tags and numbers so they can be uniquely identified. This hieracy doesn't have to strictly follow the way the volumes are themselves constructed.
 
-```
+```code
   DetElement mod_elt(lay_elt, module_name, module);
   pv = lay_vol.placeVolume(module_env, tr);
   pv.addPhysVolID("module", module);
@@ -226,9 +226,34 @@ In the case of `VertexBarrelHits`, 8 bits always required by the system, 4 bits 
 
 Here `mod_elt` is give the parent element `layer_elt`, the name and module number. Then the element is attached to a placed volume which has been given the physical volume id `module`.
 
+To run the simulation and produce an output file containing the detector hits you can use `npsim`. I would suggest only using a small sample of events given by the `--numberOfEvents` flag.
+
+```shell
+   npsim --runType run --compactFile $DETECTOR_PATH/epic_vertex_only.xml --inputFiles root://dtn-eic.jlab.org//work/eic2/EPIC/EVGEN/SIDIS/pythia6-eic/1.0.0/18x275/q2_0to1/pythia_ep_noradcor_18x275_q2_0.000000001_1.0_run9.ab.hepmc3.tree.root --numberOfEvents 100 --outputFile test.edm4hep.root
+```
+
+Inside the file there should be 4 trees:
+
+```shell
+events
+runs
+metadata
+podio_metadata
+```
+
+The events tree contains the readout of your detectors, in this example it should contain only 7 branches,
+
+```shell
+MCHeader
+MCParticles
+_MCParticles_parents
+_MCParticles_daughters
+VertexBarrelHits
+_VertexBarrelHits_MCParticle
+```
+
 > Exercise:
-> - Run the simulation with a small dataset using e.g.
-> - `npsim --runType run --compactFile $DETECTOR_PATH/epic_vertex_only.xml --inputFiles root://dtn-eic.jlab.org//work/eic2/EPIC/EVGEN/SIDIS/pythia6-eic/1.0.0/18x275/q2_0to1/pythia_ep_noradcor_18x275_q2_0.000000001_1.0_run9.ab.hepmc3.tree.root --numberOfEvents 100 --outputFile test.edm4hep.root`
+> - Run the simulation with a small dataset using
 > - Look at the output datafiles usig your favorate ROOT browser.
 > - Change the sensitive type of the `BarrelTrackerWithFrame_geo.cpp` and compare the output to what you first saw.
 > - Try to make your new tube volume sensitive by setting as sensitive and adding a `DetElement` and giving it the necessary `addPhysVolID` values not currently used by the tracker.
