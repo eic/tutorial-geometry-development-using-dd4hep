@@ -1,7 +1,7 @@
 ---
 title: "Modifying geometry"
-teaching: 30
-exercises: 30
+teaching: 20
+exercises: 40
 questions:
 - "How do we modify or add geometry defined in DD4hep?"
 objectives:
