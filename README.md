@@ -24,7 +24,9 @@ Look for the tag ![good_first_issue](https://img.shields.io/badge/-good%20first%
 
 Current maintainers of this lesson are 
 
+* Simon Gardner, @simonge, simon.gardner@Glasgow.ac.uk
 * Wouter Deconinck, @wdconinc, wouter.deconinck@umanitoba.ca
+  
 
 ## Authors
 
