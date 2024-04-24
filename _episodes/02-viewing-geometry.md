@@ -27,7 +27,7 @@ $ dd_web_display --export $DETECTOR_PATH/$DETECTOR_CONFIG.xml
 > Note: If you are not inside `eic-shell`, you may need to be connected to the internet as your run this command since a magnetic fieldmap will need to be downloaded.
 {: .callout}
 
-The `dd_web_display` utility will create a ROOT file in the current directory that can be opened with the geometry viewer online at [https://eic.phy.anl.gov/geoviewer/](https://eic.phy.anl.gov/geoviewer/) or [https://root.cern/js/latest](https://root.cern/js/latest), or a local ROOT installation.
+The `dd_web_display` utility will create a ROOT file in the current directory that can be opened with the geometry viewer online at [https://eic.phy.anl.gov/geoviewer/](https://eic.phy.anl.gov/geoviewer/) or [https://root.cern/js/latest](https://root.cern/js/latest), or a local ROOT installation. VSCode also has a JSROOT extension which provides the same functionality as the browser. 
 
 > Note: The version of JSROOT on https://eic.phy.anl.govgeoviewer/ is older than the https://root.cern/js/latest version so some differences in the visualisation may be present.
 {: .callout}
