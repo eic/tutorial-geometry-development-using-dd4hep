@@ -66,12 +66,9 @@ This particular example uses pythia6 min-bias events stored on the xrootd server
 {: .callout}
 
 
-## ACTS Surfaces
-ToDo
+## Other visualisation you might want
+ACTS Surfaces
+Material Map
+Event display
 
-## Material Map
-ToDo
-
-## Event display
-
-The decision on what event display will be adopted by the ePIC collaboration is still under discussion. This will provide an overlay of the reconstruction on the geometry.
+These are avaliable in various forms but not covered in this tutorial.
