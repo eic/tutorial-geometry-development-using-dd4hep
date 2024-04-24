@@ -68,7 +68,9 @@ This particular example uses pythia6 min-bias events stored on the xrootd server
 
 ## Other visualisation you might want
 ACTS Surfaces
+
 Material Map
+
 Event display
 
 These are avaliable in various forms but not covered in this tutorial.
