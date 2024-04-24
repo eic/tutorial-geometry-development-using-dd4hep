@@ -12,7 +12,6 @@ keypoints:
 ---
 
 ## Introduction
-There are a number of ways to visualize the geometry either as
 
 Before we move to discussion of the detector plugins in the next part, let's discuss visualization on your local system.
 
