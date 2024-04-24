@@ -200,7 +200,7 @@ In the xml file the readout for the detector is passed in the `readout` field of
       insideTrackingVolume="true">
 ```
 
-Where readout references a `readout` also defined in the xml description
+Where the readout name references a `readout` block also defined in the xml description
 
 ```code
   <readouts>
@@ -227,9 +227,12 @@ In the case of `VertexBarrelHits`, 8 bits always required by the system, 4 bits 
 Here `mod_elt` is give the parent element `layer_elt`, the name and module number. Then the element is attached to a placed volume which has been given the physical volume id `module`.
 
 > Exercise:
-> - Run the simulation...
+> - Run the simulation with a small dataset using e.g.
+> - `npsim --runType run --compactFile $DETECTOR_PATH/epic_vertex_only.xml --inputFiles root://dtn-eic.jlab.org//work/eic2/EPIC/EVGEN/SIDIS/pythia6-eic/1.0.0/18x275/q2_0to1/pythia_ep_noradcor_18x275_q2_0.000000001_1.0_run9.ab.hepmc3.tree.root --numberOfEvents 100 --outputFile test.edm4hep.root`
+> - Look at the output datafiles usig your favorate ROOT browser.
 > - Change the sensitive type of the `BarrelTrackerWithFrame_geo.cpp` and compare the output to what you first saw.
-> - Try to make your new tube volume sensitive by setting as sensitive and adding a `DetElement` and giving it the necessary `addPhysVolID`.
+> - Try to make your new tube volume sensitive by setting as sensitive and adding a `DetElement` and giving it the necessary `addPhysVolID` values not currently used by the tracker.
+> - Open ended - Move your new Tube detector into a separate src file (Or create a new simple detector) and include it separately in the xml definition and readout. 
 
 # ACTS?
 
