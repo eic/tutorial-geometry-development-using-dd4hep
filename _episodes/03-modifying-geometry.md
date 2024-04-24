@@ -75,7 +75,7 @@ We now know that changing the content of the `create_BarrelTrackerWithFrame` fun
 
 Next we will take a deeper dive into the `create_BarrelTrackerWithFrame` function to pick out the key components and how it is configured by the xml file `compact/tracking/vertex_barrel.xml`
 
-```code
+```shell
 static Ref_t create_BarrelTrackerWithFrame(Detector& description, xml_h e, SensitiveDetector sens)
 ```
 
@@ -83,7 +83,7 @@ here `description` contains access to the full tree defined from the main detect
 
 There are a few ways to access these xml configuration parameters. Some xml elements have methods provided by dd4hep which allow direct access to the values, such as:
 
-```code
+```shell
 51  Material                     air      = description.air();
 52  int                          det_id   = x_det.id();
 53  string                       det_name = x_det.nameStr();
@@ -93,7 +93,7 @@ A list of tags dd4hep provides a conventient conversion method for can be found 
 
 More often you may be wanting to define a parameter by a tag of your choice or if you're wanting to be certain how it's being handled. The following (abridged) code is an example of how to access parameters of any name.
 
-```
+```shell
   for (xml_coll_t su(x_det, _U(support)); su; ++su) {
     xml_comp_t  x_support         = su;
     double      support_thickness = getAttrOrDefault(x_support, _U(thickness), 2.0 * mm);
@@ -136,14 +136,14 @@ DD4hep geometries are built in a similar hierarchical way to Geant4 geometries.
 
 We will start by looking at the shapes anv volumes. The most common shapes you are likely to find yourself using are `Box` and `Tube`. In `src/BarrelTrackerWithFrame_geo.cpp` both are used, `module_component` is defined as `Box`, the volume of which takes its material from the xml description:
 
-```code
+```shell
 172      Box          c_box(x_comp.width() / 2, x_comp.length() / 2, x_comp.thickness() / 2);
 173      Volume       c_vol(c_nam, c_box, description.material(x_comp.materialStr()));
 ```
 
 `layer` volumes into which `module_component`s are later placed are described as a `Tube` but this time the volume is directly given the air material:
 
-```code
+```shell
 239    Tube       lay_tub(x_barrel.inner_r(), x_barrel.outer_r(), x_barrel.z_length() / 2.0);
 240    Volume     lay_vol(lay_nam, lay_tub, air); // Create the layer envelope volume.
 ```
@@ -178,20 +178,20 @@ python scripts/checkOverlaps.py -c ${DETECTOR_PATH}/epic_vertex_only.xml
 
 Placed volumes can be made sensitive by setting e.g.
 
-```code
+```shell
 194  c_vol.setSensitiveDetector(sens);
 ```
 
 The type of information that will be saved to the output is defined usually as either:
 
-```code
+```shell
   sens.setType("tracker");
   sens.setType("calorimeter");
 ```
 
 In the xml file the readout for the detector is passed in the `readout` field of the `detector` definition
 
-```code
+```shell
     <detector
       id="VertexBarrel_0_ID"
       name="VertexBarrel"
@@ -202,7 +202,7 @@ In the xml file the readout for the detector is passed in the `readout` field of
 
 Where the readout name references a `readout` block also defined in the xml description
 
-```code
+```shell
   <readouts>
     <readout name="VertexBarrelHits">
       <segmentation type="CartesianGridXY" grid_size_x="0.020*mm" grid_size_y="0.020*mm" />
@@ -217,7 +217,7 @@ The readout branch contains the information on the hit energy deposited, time of
 
 In the case of `VertexBarrelHits`, 8 bits always required by the system, 4 bits locate a specific layer, 12 a module, 2 a sensor and 32 the remaining x-y segmentation. In the code, dd4hep requires a separate hierachy of the geometry detector elements which are given tags and numbers so they can be uniquely identified. This hieracy doesn't have to strictly follow the way the volumes are themselves constructed.
 
-```code
+```shell
   DetElement mod_elt(lay_elt, module_name, module);
   pv = lay_vol.placeVolume(module_env, tr);
   pv.addPhysVolID("module", module);
@@ -229,10 +229,10 @@ Here `mod_elt` is give the parent element `layer_elt`, the name and module numbe
 To run the simulation and produce an output file containing the detector hits you can use `npsim`. I would suggest only using a small sample of events given by the `--numberOfEvents` flag.
 
 ```shell
-   npsim --runType run --compactFile $DETECTOR_PATH/epic_vertex_only.xml --inputFiles root://dtn-eic.jlab.org//work/eic2/EPIC/EVGEN/SIDIS/pythia6-eic/1.0.0/18x275/q2_0to1/pythia_ep_noradcor_18x275_q2_0.000000001_1.0_run9.ab.hepmc3.tree.root --numberOfEvents 100 --outputFile test.edm4hep.root
+$ npsim --runType run --compactFile $DETECTOR_PATH/epic_vertex_only.xml --inputFiles root://dtn-eic.jlab.org//work/eic2/EPIC/EVGEN/SIDIS/pythia6-eic/1.0.0/18x275/q2_0to1/pythia_ep_noradcor_18x275_q2_0.000000001_1.0_run9.ab.hepmc3.tree.root --numberOfEvents 100 --outputFile test.edm4hep.root
 ```
 
-Inside the file there should be 4 trees:
+Inside the output file `test.edm4hep.root` there should be 4 trees:
 
 ```shell
 events
@@ -251,6 +251,8 @@ _MCParticles_daughters
 VertexBarrelHits
 _VertexBarrelHits_MCParticle
 ```
+
+The `MCParticles` branch contains information on all of the particles described by your generator and any secondaries produced in the simulation. `VertexBarrelHits` contains the hit information of the vertex barrel and has the association branch `_VertexBarrelHits_MCParticle` which references the particle in the `MCParticles` branch which caused the hit.
 
 > Exercise:
 > - Run the simulation with a small dataset using
