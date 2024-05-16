@@ -39,11 +39,9 @@ epic-24.03.0
 epic-24.03.1
 epic-24.04.0
 epic-main
-epic-nightly
 fieldmaps
 gdml
 lib
-setup.sh
 share
 ```
 
@@ -52,32 +50,29 @@ share
 
 The versions avaliable in eic-shell are updated when tagged releases for the geometry are made each month or an update to dependancies installed in eic-shell removes back compatibility with older versions.
 
-The `epic-nightly` directory contains the current 'nightly build' of the ePIC geometry, built from the [epic repositories main branch](https://github.com/eic/epic/) every day.
+The `epic-main` directory contains the current 'nightly build' of the ePIC geometry, built from the [epic repositories main branch](https://github.com/eic/epic/) every day.
 ```console
-$ ls -1 /opt/detector/epic-nightly/
+$ ls -1 /opt/detector/epic-main/
 bin
 lib
-setup.sh
 share
+$ ls -1 /opt/detector/epic-main/bin
+thisepic.sh
 ```
 
-You can load a geometry by 'sourcing' the `setup.sh` file. Sourcing the top-level `setup.sh` file will load the default geometry (which is currently `epic-nightly`):
+You can load a geometry by 'sourcing' the `bin/thisepic.sh` file.
 ```console
-$ source /opt/detector/setup.sh
-```
-or
-```console
-$ source /opt/detector/epic-nightly/setup.sh
+$ source /opt/detector/epic-main/bin/thisepic.sh
 ```
 Both commands should have the same effect:
-- your prompt should have changed to `nightly> ` to indicate the geometry that is loaded,
-- your shell environment will have the necessary variables loaded to work with the `epic-nightly` geometry.
+- your prompt should have changed to `main> ` to indicate the geometry that is loaded,
+- your shell environment will have the necessary variables loaded to work with the `epic-main` geometry.
 
 You can verify the latter by investigating the values of several environment variables:
 - `DETECTOR` is the name of the detector geometry that is loaded (`epic`),
 - `DETECTOR_VERSION` is the version (i.e. GitHub branch or tag) that is loaded (`main`),
 - `DETECTOR_CONFIG` is the detector configuration to use (i.e. whether to include MRICH or PFRICH, SciGlass or imaging ECAL),
-- `DETECTOR_PATH` is the location that points to the geometry resources (`/opt/detector/epic-nightly/share/epic`).
+- `DETECTOR_PATH` is the location that points to the geometry resources (`/opt/detector/epic-main/share/epic`).
 
 > Note: When working on the geometry in your own git branch you will need to source the setup.sh present in the local install directory.
 {: .callout}
