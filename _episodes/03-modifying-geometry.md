@@ -37,16 +37,16 @@ $ cmake --build build -- install
 
 This will install the geometry into the directory `~/eic/epic/install/` (and subdirectories). You will notice that `~/eic/epic/install/share/epic` contains the same files that we explored earlier inside the `/opt/detector` directory.
 
-As before, we now need to load the environment for this geometry. We can again use the `setup.sh` script for this, though now we must use the one installed in our local installation directory:
+As before, we now need to load the environment for this geometry. We can again use the `bin/thisepic.sh` script for this, though now we must use the one installed in our local installation directory:
 ```console
-$ source install/setup.sh
+$ source install/bin/thisepic.sh
 ```
 
 When we run `dd_web_display --export $DETECTOR_PATH/$DETECTOR_CONFIG.xml` now, we will use the local geometry parametrization and the local geometry plugins. (Note: As before, downloads of fieldmaps and calibration files will be necessary.)
 
 > Quick Exercise:
 > - Ensure that you have a local copy of the geometry repository which you can compile and install in a local directory.
-> - Verify that, after sourcing the `setup.sh` script, the `DETECTOR_PATH` points to the correct local install directory.
+> - Verify that, after sourcing the `bin/thisepic.sh` script, the `DETECTOR_PATH` points to the correct local install directory.
 > - Verify that `dd_web_display` can indeed export the geometry for the detector subsystem configuration you used before.
 {: .challenge}
 
