@@ -4,7 +4,7 @@ title: Setup
 In advance of the training session, please ensure that
 1. You have a GitHub account ([sign up here](https://github.com/signup))
 1. Your GitHub account is a member of the [EIC organization](https://github.com/eic) on GitHub
-- Email [the EICUG SWG conveners](mailto:eic-software-l-owner@lists.bnl.gov) with your GitHub account to be added
+- Email [the EIC software conveners](mailto:eic-software-l-request@lists.bnl.gov) with your GitHub account to be added
 1. You have singularity/apptainer or docker (on Mac) installed and working
 - `module load singularity` (on most JLab or BNL systems) (preferred option)
 - Local system options:
