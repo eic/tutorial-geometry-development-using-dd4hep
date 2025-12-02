@@ -25,6 +25,11 @@ build  CMakeLists.txt  configurations  README.md  requirements.txt  src      vie
 
 As you can tell, the content of the repository itself is quite different from the installed version (as is often the case for other software as well). You will recognize, however, the `compact` directory with the subsystem xml files.
 
+### Important : To follow this tutorial we will need to checkout an older version of the geometry
+```console
+$ git checkout 25.08.0
+```
+
 In order to compile and install the local geometry repository into a local directory, we can use the following commands:
 ```console
 $ cd ~/eic/epic
@@ -119,7 +124,7 @@ A fuller description of how to access and use the xml parameters is given in sec
 
 
 > Exercise:
-> - Create and chackout a new branch forked from the main branch.
+> - Create and chackout a new branch forked from the 25.08.0 branch.
 > - Add a new configuration parameter into `compact/tracking/vertex_barrel.xml` 
 > - Add code to `src/BarrelTrackerWithFrame_geo.cpp` which will read the new parameter and a print statement to display its value to the terminal.
 > - Recompile and rerun the `dd_web_display` step using `epic_vertex_only.xml` to verify that the printout statement has been added.
