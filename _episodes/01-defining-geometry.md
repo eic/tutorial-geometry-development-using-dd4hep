@@ -28,35 +28,31 @@ We start the discussion of the geometry definition with an overview of the locat
 Several standard geometry versions are included in `eic-shell` under the `/opt/detector/` location. This includes (currently) at least the following:
 ```console
 $ ls -1 /opt/detector/
-calibrations
-dummyOutput.root
-epic-23.10.0
-epic-23.11.0
-epic-23.12.0
-epic-24.02.0
-epic-24.02.1
-epic-24.03.0
-epic-24.03.1
-epic-24.04.0
+epic-25.08.0
+epic-25.09.0
+epic-25.10.0
+epic-25.10.1
+epic-25.10.2
+epic-25.10.3
+epic-25.11.0
+epic-git.b9028c3401ee650c703e9634ed41d8d19558bc68_main
 epic-main
-fieldmaps
-gdml
-lib
-share
 ```
 
 > Note: `ls -1` lists the files with 1 file per line, i.e. in 1 column.
 {: .callout}
 
-The versions avaliable in eic-shell are updated when tagged releases for the geometry are made each month or an update to dependancies installed in eic-shell removes back compatibility with older versions.
+The versions avaliable in eic-shell are updated when tagged releases for the geometry are made each month or an update to dependancies installed in eic-shell removes back compatibility with older versions. We aim to back support the last 6 months of releases in the container.
 
 The `epic-main` directory contains the current 'nightly build' of the ePIC geometry, built from the [epic repositories main branch](https://github.com/eic/epic/) every day.
 ```console
 $ ls -1 /opt/detector/epic-main/
 bin
 lib
+setup.sh
 share
 $ ls -1 /opt/detector/epic-main/bin
+g4MaterialScan_to_csv
 thisepic.sh
 ```
 
@@ -64,11 +60,13 @@ You can load a geometry by 'sourcing' the `bin/thisepic.sh` file.
 ```console
 $ source /opt/detector/epic-main/bin/thisepic.sh
 ```
-Both commands should have the same effect:
-- your prompt should have changed to `main> ` to indicate the geometry that is loaded,
+The comman should have the same effect:
 - your shell environment will have the necessary variables loaded to work with the `epic-main` geometry.
 
 You can verify the latter by investigating the values of several environment variables:
+```console
+$ env | grep DETECTOR
+```
 - `DETECTOR` is the name of the detector geometry that is loaded (`epic`),
 - `DETECTOR_VERSION` is the version (i.e. GitHub branch or tag) that is loaded (`main`),
 - `DETECTOR_CONFIG` is the detector configuration to use (i.e. whether to include MRICH or PFRICH, SciGlass or imaging ECAL),
@@ -78,7 +76,7 @@ You can verify the latter by investigating the values of several environment var
 {: .callout}
 
 > Exercise:
-> - Load the standard ePIC geometry and verify (with e.g. `echo $DETECTOR`) that the environment variables are set.
+> - Load the standard ePIC geometry and verify (with e.g. `echo $DETECTOR_PATH`) that the environment variables are set.
 > - Load another geometry and verify that the environment variables are indeed different.
 {: .challenge}
 
@@ -87,23 +85,28 @@ You can verify the latter by investigating the values of several environment var
 We will now take a look in the directory pointed to with the environment variable `$DETECTOR_PATH`, the location of the geometry resources:
 ```console
 $ ls $DETECTOR_PATH
-calibrations                      epic_craterlake_tracking_only.xml        epic_lfhcal_with_insert.xml
-compact                           epic_craterlake.xml                      epic_mrich_only.xml
-dummyOutput.root                  epic_dirc_only.xml                       epic_pfrich_only.xml
-epic_bhcal.xml                    epic_drich_only.xml                      epic_pid_only.xml
-epic_calorimeters.xml             epic_forward_detectors_with_inserts.xml  epic_tof_endcap_only.xml
-epic_craterlake_10x100.xml        epic_forward_detectors.xml               epic_tof_only.xml
-epic_craterlake_10x275.xml        epic_full.xml                            epic_vertex_only.xml
-epic_craterlake_18x110_Au.xml     epic_imaging_only.xml                    epic.xml
-epic_craterlake_18x275.xml        epic_inner_detector.xml                  epic_zdc_lyso_sipm.xml
-epic_craterlake_5x41.xml          epic_ip6_extended.xml                    epic_zdc_sipm_on_tile_only.xml
-epic_craterlake_material_map.xml  epic_ip6.xml                             fieldmaps
-epic_craterlake_no_bhcal.xml      epic_lfhcal_only.xml                     gdml
+calibrations                       epic_craterlake_5x100.xml                     epic_forward_calorimeters.xml
+compact                            epic_craterlake_5x41_He3.xml                  epic_forward_detectors_with_inserts.xml
+epic_backward_hcal_only_sampF.xml  epic_craterlake_5x41.xml                      epic_forward_detectors.xml
+epic_backward_hcal_only.xml        epic_craterlake_bic_6layers.xml               epic_full.xml
+epic_bhcal.xml                     epic_craterlake_bic_layer1_only.xml           epic_imaging_only.xml
+epic_calorimeters.xml              epic_craterlake_material_map_25_07_0.xml      epic_inner_detector.xml
+epic_craterlake_10x100_Au197.xml   epic_craterlake_material_map.xml              epic_ip6_extended.xml
+epic_craterlake_10x100.xml         epic_craterlake_no_bhcal.xml                  epic_ip6.xml
+epic_craterlake_10x110_He3.xml     epic_craterlake_no_zdc_lyso.xml               epic_lfhcal_only.xml
+epic_craterlake_10x115_Cu63.xml    epic_craterlake_tracking_only.xml             epic_pfrich_only.xml
+epic_craterlake_10x115_Ru96.xml    epic_craterlake_without_zdc_10x100_Au197.xml  epic_pid_only.xml
+epic_craterlake_10x130_H2.xml      epic_craterlake_without_zdc_5x41_Au197.xml    epic_tof_endcap_only.xml
+epic_craterlake_10x130.xml         epic_craterlake.xml                           epic_tof_only.xml
+epic_craterlake_10x166_He3.xml     epic_dirc_only.xml                            epic_vertex_only.xml
+epic_craterlake_10x250.xml         epic_drich_only.xml                           epic.xml
+epic_craterlake_10x275.xml         epic_eeemcal_only.xml                         epic_zdc_lyso_sipm.xml
+epic_craterlake_18x110_Au.xml      epic_femcal_averaged_homogeneous.xml          epic_zdc_sipm_on_tile_only.xml
+epic_craterlake_18x110_He3.xml     epic_femcal_scfi.xml                          fieldmaps
+epic_craterlake_18x275.xml         epic_fhcal.xml                                gdml
 ```
 You will see many xml files, all of which are entry points to the geometry in certain configurations. For example, `epic_drich_only.xml` includes the geometry that has only the dual RICH or dRICH. `epic_ip6.xml` includes the beampipe geometry and the auxillary far-forward and backward detectors but no components of the central detector. The default configuration, `epic.xml`, is typically the configuration you will want to use, this is the value that `DETECTOR_CONFIG` will be set to by default.
 
-> Note: The current nightly eic-shell build contains only configurations for the craterlake detector setup.
-{: .callout}
 
 Let's take a look in *the default entry point file*, pointed at by the `DETECTOR_CONFIG` environment variable. This is the file `epic.xml`:
 ```console
@@ -128,13 +131,25 @@ $ less $DETECTOR_PATH/compact/tracking/vertex_barrel.xml
 You will notice that the detector is described by parameters in a `define` block, such as (abridged):
 ```xml
   <define>
-    <constant name="VertexBarrelMod_length"             value="VertexBarrel_length"/>
-    <constant name="VertexBarrelMod_rmin"               value="VertexBarrel_rmin"/>
+    <constant name="SiVertexSensor_thickness" value="40*um" />
 
-    <constant name="SiVertexSensor_thickness"           value="40*um"/>
+    <comment>
+      1 RSU              = 2x6 tiles with inactive areas == 2x2 sections
+      1 section (module) = 3-tiles along z
+      1 "stave"          = 1 row of 12 RSU
+    </comment>
+
+    <constant name="RSU_width"   value="19.564*mm" />
+    <constant name="RSU_length"  value="21.666*mm" />
+    <constant name="Periphery_width" value="0.398*mm"/>
+    <constant name="bias_width" value="0.06*mm"/>
+    <constant name="backbone_width" value="0.09*mm"/>
+    <constant name="Section_width"  value="RSU_width/2-bias_width-Periphery_width"
+/>
+    <constant name="Section_length" value="RSU_length/2-backbone_width"/>
   </define>
 ```
-which can either use another parameter defined previously in the included files, or which can be defined in this file itself. A best practices is to define detailed parameters of each subsystem in the end point file, but to defer to the central definitions in the `definitions.xml` for quantities such as the overal size and location of the subsystem, or interfaces with other subsystems.
+which can either use another parameter defined previously in the included files, or which can be defined in this file itself. A best practices is to define detailed parameters of each subsystem in the end point file, but to defer to the central definitions in the `definitions.xml` for quantities such as the overal size and location of the subsystem, or interfaces with other subsystems. Comments can also be left throughout the xml description to help document the values.
 
 The parameters are then used in the `detector` block to define the detector itself (much abridged):
 ```xml
@@ -142,13 +157,22 @@ The parameters are then used in the `detector` block to define the detector itse
     <detector
       id="VertexBarrel_0_ID"
       name="VertexBarrel"
-      type="epic_VertexBarrel"
+      type="epic_CylinderSVTBarrel"
       readout="VertexBarrelHits"
       insideTrackingVolume="true">
-      <dimensions
-        rmin="VertexBarrelLayer1_rmin"
-        rmax="VertexBarrelLayer3_rmax"
-        length="VertexBarrelEnvelope_length" />
+
+      <module name="Module0_upper" rmin="VertexBarrelModL0_rmin"  width="VertexBar
+relStaveL0_width"
+      length="VertexBarrelMod_length">
+        <module_component name="RSU" type="upper"
+          material="Silicon"
+          sensitive="true"
+          thickness="SiVertexSensor_thickness"
+          width="Section_width"
+          length="Section_length"
+          vis="VertexLayerVis" />
+      </module>
+
     </detector>
   </detectors>
 ```
