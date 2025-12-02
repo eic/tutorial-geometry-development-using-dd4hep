@@ -40,7 +40,10 @@ This will install the geometry into the directory `~/eic/epic/install/` (and sub
 As before, we now need to load the environment for this geometry. We can again use the `bin/thisepic.sh` script for this, though now we must use the one installed in our local installation directory:
 ```console
 $ source install/bin/thisepic.sh
+$ env | grep DETECTOR
 ```
+
+You should now see that the $DETECTOR_PATH variable points to your local install path.
 
 When we run `dd_web_display --export $DETECTOR_PATH/$DETECTOR_CONFIG.xml` now, we will use the local geometry parametrization and the local geometry plugins. (Note: As before, downloads of fieldmaps and calibration files will be necessary.)
 
