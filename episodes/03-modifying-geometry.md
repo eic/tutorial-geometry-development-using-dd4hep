@@ -315,27 +315,37 @@ To run the simulation and produce an output file containing the detector hits yo
 $ npsim --runType run --compactFile $DETECTOR_PATH/epic_vertex_only.xml --inputFiles root://dtn-eic.jlab.org//volatile/eic/EPIC/EVGEN/SIDIS/pythia6-eic/1.0.0/18x275/q2_0to1/pythia_ep_noradcor_18x275_q2_0.000000001_1.0_run9.ab.hepmc3.tree.root --numberOfEvents 100 --outputFile test.edm4hep.root
 ```
 
-Inside the output file `test.edm4hep.root` there should be 4 trees:
+Inside the output file `test.edm4hep.root` there should be 5 trees:
 
 ```
 events
 runs
+meta
 metadata
 podio_metadata
 ```
 
-The events tree contains the readout of your detectors, in this example it should contain only 7 branches,
+The events tree contains the readout of your detectors. In this example it contains the following branches:
 
 ```
-MCHeader
+EventHeader
+_EventHeader_weights
 MCParticles
 _MCParticles_parents
 _MCParticles_daughters
 VertexBarrelHits
-_VertexBarrelHits_MCParticle
+_VertexBarrelHits_particle
+GPIntKeys
+GPIntValues
+GPFloatKeys
+GPFloatValues
+GPDoubleKeys
+GPDoubleValues
+GPStringKeys
+GPStringValues
 ```
 
-The `MCParticles` branch contains information on all of the particles described by your generator and any secondaries produced in the simulation. `VertexBarrelHits` contains the hit information of the vertex barrel and has the association branch `_VertexBarrelHits_MCParticle` which references the particle in the `MCParticles` branch which caused the hit.
+The `EventHeader` branch holds per-event bookkeeping and the `GP*` branches hold general parameters (key/value metadata) attached to the frame. The `MCParticles` branch contains information on all of the particles described by your generator and any secondaries produced in the simulation. `VertexBarrelHits` contains the hit information of the vertex barrel and has the association branch `_VertexBarrelHits_particle` which references the particle in the `MCParticles` branch which caused the hit.
 
 ::::::::::::::::::::::::::::::::::::::::::::: challenge
 
