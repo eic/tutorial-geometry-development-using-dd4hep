@@ -1,0 +1,31 @@
+# This CITATION.cff file provides information used to cite this lesson.
+# Visit https://citation-file-format.github.io/ for the format reference,
+# and update the author list and other fields as the lesson develops.
+
+cff-version: 1.2.0
+title: 'Geometry Development with DD4hep (ePIC tutorial)'
+message: >-
+  Please cite this lesson using the information in this file
+  when you refer to it in publications, and/or if you
+  re-use, adapt, or expand on the content in your own
+  training material.
+type: dataset
+authors:
+  - given-names: Simon
+    family-names: Gardner
+  - name: The ePIC Collaboration
+abstract: >-
+  An ePIC tutorial on developing detector geometry with the DD4hep toolkit: locating the ePIC
+  geometry inside eic-shell, understanding the structure of a compact geometry description,
+  viewing the geometry, and modifying or adding to it by writing detector plugins. Built with
+  The Carpentries Workbench.
+keywords:
+  - EIC
+  - ePIC
+  - DD4hep
+  - geometry
+  - detector description
+  - Geant4
+  - ROOT
+repository-code: 'https://github.com/eic/tutorial-geometry-development-using-dd4hep'
+license: CC-BY-4.0
