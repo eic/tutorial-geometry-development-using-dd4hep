@@ -19,10 +19,16 @@
     <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/aio.html</loc>
+  </url>
+  <url>
     <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/citation.html</loc>
   </url>
   <url>
     <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/discuss.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/images.html</loc>
   </url>
   <url>
     <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/index.html</loc>
@@ -46,19 +52,37 @@
     <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/instructor/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/instructor/aio.html</loc>
+  </url>
+  <url>
     <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/instructor/citation.html</loc>
   </url>
   <url>
     <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/instructor/discuss.html</loc>
   </url>
   <url>
+    <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/instructor/images.html</loc>
+  </url>
+  <url>
     <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/instructor/index.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/instructor/instructor-notes.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/instructor/key-points.html</loc>
   </url>
   <url>
     <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/instructor/profiles.html</loc>
   </url>
   <url>
     <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/instructor/reference.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/instructor-notes.html</loc>
+  </url>
+  <url>
+    <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/key-points.html</loc>
   </url>
   <url>
     <loc>https://eic.github.io/tutorial-geometry-development-using-dd4hep/profiles.html</loc>
