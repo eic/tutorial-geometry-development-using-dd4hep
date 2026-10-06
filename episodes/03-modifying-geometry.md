@@ -312,7 +312,7 @@ Here `mod_elt` is given the parent element `layer_elt`, the name and module numb
 To run the simulation and produce an output file containing the detector hits you can use `npsim`. I would suggest only using a small sample of events given by the `--numberOfEvents` flag.
 
 ```bash
-$ npsim --runType run --compactFile $DETECTOR_PATH/epic_vertex_only.xml --inputFiles root://dtn-eic.jlab.org//volatile/eic/EPIC/EVGEN/SIDIS/pythia6-eic/1.0.0/18x275/q2_0to1/pythia_ep_noradcor_18x275_q2_0.000000001_1.0_run9.ab.hepmc3.tree.root --numberOfEvents 100 --outputFile test.edm4hep.root
+$ npsim --runType run --compactFile $DETECTOR_PATH/epic_vertex_only.xml --inputFiles root://dtn2304.jlab.org:8443//jlab-osdf-ro/eic/EPIC/volatile/EVGEN/SIDIS/pythia6-eic/1.0.0/18x275/q2_0to1/pythia_ep_noradcor_18x275_q2_0.000000001_1.0_run9.ab.hepmc3.tree.root --numberOfEvents 100 --outputFile test.edm4hep.root
 ```
 
 Inside the output file `test.edm4hep.root` there should be 5 trees:
