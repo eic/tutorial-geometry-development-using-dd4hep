@@ -21,7 +21,7 @@ exercises: 10
 
 The [ePIC geometry](https://github.com/eic/epic) is described using the [DD4hep toolkit](https://dd4hep.web.cern.ch/dd4hep/).
 
-DD4hep (Detector Description for High Energy Physics) is a toolkit which acts as a single, central source of detector information for simulation and reconstruction of simulated and experimental data. The core DD4hep geometry description is built around the [ROOT geometry package](https://root.cern/manual/geometry/) while providing automatic conversions to other geometrical representaions, such as exporting CAD models, surfaces for acts reconstruction, material maps but most importany, [Geant4](https://geant4.web.cern.ch/docs/) for carrying out simulations.
+DD4hep (Detector Description for High Energy Physics) is a toolkit which acts as a single, central source of detector information for simulation and reconstruction of simulated and experimental data. The core DD4hep geometry description is built around the [ROOT geometry package](https://root.cern/manual/geometry/) while providing automatic conversions to other geometrical representations, such as exporting CAD models, surfaces for acts reconstruction, material maps but most importanly, [Geant4](https://geant4.web.cern.ch/docs/) for carrying out simulations.
 
 DD4hep additionally provides a much simplified wrapper around running Geant4 simulations, providing standardized output from sensitive detectors. In the case of the ePIC simulation, simulated particles and tracker/calorimeter hits are saved as collections in [EDM4hep format](https://github.com/key4hep/EDM4hep) (Event Data Model for High Energy Physics) built on [podio](https://github.com/AIDASoft/podio/blob/master/doc/doc.md) (plain-old-data I/O).
 
@@ -52,7 +52,7 @@ Note: `ls -1` lists the files with 1 file per line, i.e. in 1 column.
 
 :::::::::::::::::::::::::::::::::::::::::::::
 
-The versions avaliable in eic-shell are updated when tagged releases for the geometry are made each month or an update to dependancies installed in eic-shell removes back compatibility with older versions. We aim to back support the last 6 months of releases in the container.
+The versions available in eic-shell are updated when tagged releases for the geometry are made each month or an update to dependencies installed in eic-shell removes back compatibility with older versions. We aim to back support the last 6 months of releases in the container.
 
 The `epic-main` directory contains the current 'nightly build' of the ePIC geometry, built from the [epic repositories main branch](https://github.com/eic/epic/) every day.
 
@@ -140,7 +140,7 @@ epic_craterlake_18x110_He3.xml     epic_femcal_scfi.xml                         
 epic_craterlake_18x275.xml         epic_fhcal.xml                                gdml
 ```
 
-You will see many xml files, all of which are entry points to the geometry in certain configurations. For example, `epic_drich_only.xml` includes the geometry that has only the dual RICH or dRICH. `epic_ip6.xml` includes the beampipe geometry and the auxillary far-forward and backward detectors but no components of the central detector. The default configuration, `epic.xml`, is typically the configuration you will want to use, this is the value that `DETECTOR_CONFIG` will be set to by default.
+You will see many xml files, all of which are entry points to the geometry in certain configurations. For example, `epic_drich_only.xml` includes the geometry that has only the dual RICH or dRICH. `epic_ip6.xml` includes the beampipe geometry and the auxiliary far-forward and backward detectors but no components of the central detector. The default configuration, `epic.xml`, is typically the configuration you will want to use, this is the value that `DETECTOR_CONFIG` will be set to by default.
 
 Let's take a look in *the default entry point file*, pointed at by the `DETECTOR_CONFIG` environment variable. This is the file `epic.xml`:
 
@@ -193,7 +193,7 @@ You will notice that the detector is described by parameters in a `define` block
   </define>
 ```
 
-which can either use another parameter defined previously in the included files, or which can be defined in this file itself. A best practices is to define detailed parameters of each subsystem in the end point file, but to defer to the central definitions in the `definitions.xml` for quantities such as the overal size and location of the subsystem, or interfaces with other subsystems. Comments can also be left throughout the xml description to help document the values.
+which can either use another parameter defined previously in the included files, or which can be defined in this file itself. A best practices is to define detailed parameters of each subsystem in the end point file, but to defer to the central definitions in the `definitions.xml` for quantities such as the overall size and location of the subsystem, or interfaces with other subsystems. Comments can also be left throughout the xml description to help document the values.
 
 The parameters are then used in the `detector` block to define the detector itself (much abridged):
 
